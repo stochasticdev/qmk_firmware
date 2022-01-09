@@ -102,12 +102,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define RBG_VAL 120
 #define LAYER_INDICATOR_LED_MIN 80
 #define LAYER_INDICATOR_LED_MAX 82
-
+#define CAPSLOCK_LED_MIN 68
+#define CAPSLOCK_LED_MAX 69
 // rgb indicator
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    const uint8_t layer = get_highest_layer(layer_state | default_layer_state);
     for (uint8_t i = led_min; i <= led_max; i++) {
         if (i >= LAYER_INDICATOR_LED_MIN && i <= LAYER_INDICATOR_LED_MAX) {
-            switch (get_highest_layer(layer_state | default_layer_state)) {
+            switch (layer) {
                 case _WIN_LOWER:
                     // green-ish
                     rgb_matrix_set_color(i, RGB_YELLOW);
@@ -125,6 +127,13 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     // Default colors
                     rgb_matrix_set_color(i, RGB_GREEN);
                     break;
+            }
+        }
+        if (i >= CAPSLOCK_LED_MIN && i <= CAPSLOCK_LED_MAX) {
+            if (host_keyboard_led_state().caps_lock) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(i, 255, 255, 255);
+            } else {
+                RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
             }
         }
     }
