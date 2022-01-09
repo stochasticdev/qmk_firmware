@@ -100,25 +100,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // changes underglow based on current layer
 #define RBG_VAL 120
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (biton32(state)) {
-        case _WIN_LOWER:
-            // green-ish
-            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
-            break;
-        case _WIN_RAISE:
-            // Red
-            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
-            break;
-        case _MAC_LOWER:
-            // Dark Blue
-            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
-            break;
-        case _MAC_RAISE:
-        default:
-            // Default colors
-            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
-            break;
+#define LAYER_INDICATOR_LED_MIN 69
+#define LAYER_INDICATOR_LED_MAX 81
+
+// rgb indicator
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    for (uint8_t i = led_min; i <= led_max; i++) {
+        if (i >= LAYER_INDICATOR_LED_MIN && i <= LAYER_INDICATOR_LED_MAX) {
+            switch (get_highest_layer(layer_state | default_layer_state)) {
+                case _WIN_LOWER:
+                    // green-ish
+                    rgb_matrix_set_color(i, RGB_YELLOW);
+                    break;
+                case _WIN_RAISE:
+                    // Red
+                    rgb_matrix_set_color(i, RGB_RED);
+                    break;
+                case _MAC_LOWER:
+                    // Dark Blue
+                    rgb_matrix_set_color(i, RGB_PURPLE);
+                    break;
+                case _MAC_RAISE:
+                default:
+                    // Default colors
+                    rgb_matrix_set_color(i, RGB_GREEN);
+                    break;
+            }
+        }
     }
-    return state;
 }
