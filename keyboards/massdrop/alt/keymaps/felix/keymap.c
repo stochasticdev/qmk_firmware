@@ -97,3 +97,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;  // Process all other keycodes normally
     }
 }
+
+// changes underglow based on current layer
+#define RBG_VAL 120
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (biton32(state)) {
+        case _WIN_LOWER:
+            // green-ish
+            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
+            break;
+        case _WIN_RAISE:
+            // Red
+            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
+            break;
+        case _MAC_LOWER:
+            // Dark Blue
+            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
+            break;
+        case _MAC_RAISE:
+        default:
+            // Default colors
+            rgb_matrix_set_color(82, 72, 221, RBG_VAL);
+            break;
+    }
+    return state;
+}
