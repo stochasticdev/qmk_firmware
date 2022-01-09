@@ -100,8 +100,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // changes underglow based on current layer
 #define RBG_VAL 120
-#define LAYER_INDICATOR_LED_MIN 69
-#define LAYER_INDICATOR_LED_MAX 81
+#define LAYER_INDICATOR_LED_MIN 80
+#define LAYER_INDICATOR_LED_MAX 82
 
 // rgb indicator
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
